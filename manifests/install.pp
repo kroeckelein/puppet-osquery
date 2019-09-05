@@ -1,7 +1,7 @@
 # osquery::install - installation class
 class osquery::install {
 
-  # Installation methods vary for OS type and family 
+  # Installation methods vary for OS type and family
   case $::kernel {
     'Linux': {
       # repo install [optional]
@@ -25,13 +25,8 @@ class osquery::install {
               ensure  => $::osquery::package_ver,
             }
 
-            package { 'apt-transport-https':
-              ensure => present,
-              notify => Class['apt::update'],
-            }
-
             # explicitly set ordering for installation of package, repo and package
-            Package['apt-transport-https'] -> Apt::Source['osquery_repo'] -> Package[$::osquery::package_name]
+            Apt::Source['osquery_repo'] -> Package[$::osquery::package_name]
           }
           'RedHat': {
             # add the osquery yum repo package
