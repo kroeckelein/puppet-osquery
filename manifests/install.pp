@@ -43,6 +43,25 @@ class osquery::install {
             # explicitly set ordering for installation of repo and package
             Package[$::osquery::repo_name] -> Package[$::osquery::package_name]
           }
+          'Suse': {
+            # add zypper repo
+            zypprepo { 'osquery-repo':
+              baseurl      => $::osquery::repo_url,
+              enabled      => 1,
+              autorefresh  => 1,
+              name         => 'osquery-repo',
+              gpgcheck     => 0,
+              priority     => 10,
+              type         => 'rpm-md',
+            }
+            # install osquery package. Working repository for zypper is required
+            package { $::osquery::package_name:
+              ensure  => $::osquery::package_ver,
+              require => Zypprepo['osquery-repo'],
+            }
+            # explicitly set ordering for installation of repo and package
+            Zypprepo['osquery-repo'] -> Package[$::osquery::package_name]
+          }
           default: {
             fail("${::osfamily} not supported")
           }

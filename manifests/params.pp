@@ -48,6 +48,9 @@ class osquery::params {
       $repo_key_id     = '1484120AC4E9F8A1A577AEEE97A80C63C9D8B80B'
       $repo_key_server = 'keyserver.ubuntu.com'
     }
+    'Suse': {
+      $repo_url        = 'https://s3.amazonaws.com/osquery-packages/rpm/x86_64/'
+    }
     'windows': {
     }
     default: {
